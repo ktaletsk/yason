@@ -55,7 +55,7 @@ def list_argo_jobs():
     username = get_jupyter_username()
     
     try:
-        api_response = api_instance.list_namespaced_custom_object(group, version, namespace, plural, label_selector = f'username={username}')
+        api_response = api_instance.list_namespaced_custom_object(group, version, namespace, plural, label_selector = f'username={username},hidden=false')
         data = []
         for item in api_response['items']:
             notebook_name = ''
@@ -152,7 +152,8 @@ def schedule_notebook(filename):
         "labels": {
             "username": username,
             "uuid": job_uuid,
-            "notebook-name": filename
+            "notebook-name": filename,
+            "hidden": "false"
         }
       },
       "spec": {
@@ -212,7 +213,9 @@ def schedule_notebook(filename):
     }    
     create_argo_job(body)
 
-def get_workflow(jobname, destination):
+def get_workflow(job_uuid, destination):
+    username = get_jupyter_username()
+    jobname = username + '-workflow-' + job_uuid
     bucket = get_bucket()
     
     # Download Argo atrifact (archive) to a temporary location
@@ -238,5 +241,19 @@ def get_workflow(jobname, destination):
     # Rename resulting notebook and move it to the desired location
     shutil.move(local_temp_result_folder + '/out.ipynb', destination)
 
-def delete_workflow():
-    pass
+def delete_workflow(job_uuid):
+    #Get CRD for uuid
+    username = get_jupyter_username()
+    jobname = username + '-workflow-' + job_uuid
+    api_instance = setup_k8s_api()
+    try: 
+        api_response = api_instance.get_namespaced_custom_object(group, version, namespace, plural, jobname)
+    except ApiException as e:
+        print(f'Cannot find job {job_uuid}')
+
+    #Patch CRD to change label
+    api_response['metadata']['labels']['hidden'] = 'true'
+    try: 
+        api_instance.patch_namespaced_custom_object(group, version, namespace, plural, jobname, api_response)
+    except ApiException as e:
+        print("Cannot delete job {job_uuid}")

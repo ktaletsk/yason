@@ -20,6 +20,11 @@ def add(filename):
     ys.schedule_notebook(filename)
 
 @main.command()
+@click.argument('filename')
+def delete(filename):
+    ys.delete_workflow(filename)
+
+@main.command()
 @click.argument('jobname', nargs=1)
 @click.argument('destination', nargs=1)
 def get(jobname, destination):
