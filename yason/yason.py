@@ -70,21 +70,12 @@ def create_argo_job(body):
     except ApiException as e:
         print("Exception when calling CustomObjectsApi->create_namespaced_custom_object: %s\n" % e)
                          
-def schedule_notebook(filename):
+def get_bucket():
     """
-    Send the Notebook with the given filename to Argo cluster for execution
+    Get credentials from environment variables
+    Create boto3 resource
+    Connect to and return S3 bucket
     """
-                         
-    job_uuid = uuid.uuid4().hex
-                         
-    # Put Notebook file into local temporary archive
-    local_temp_archive_handle, local_temp_archive_path = tempfile.mkstemp(suffix='.tgz')
-    os.close(local_temp_archive_handle)
-    tar = tarfile.open(local_temp_archive_path, "w:gz")
-    tar.add(filename)
-    tar.close()
-    
-    # Upload archive to S3 bucket
     #Setup S3 resource
     try:
         assert(AWS_HOST!=None)
@@ -102,9 +93,24 @@ def schedule_notebook(filename):
                         config=Config(signature_version='s3v4'))
 
     #Create bucket object
-    bucket = s3.Bucket('rookbucket')
+    return s3.Bucket('rookbucket')
                          
-    #Upload archive to S3
+def schedule_notebook(filename):
+    """
+    Send the Notebook with the given filename to Argo cluster for execution
+    """
+                         
+    job_uuid = uuid.uuid4().hex
+                         
+    # Put Notebook file into local temporary archive
+    local_temp_archive_handle, local_temp_archive_path = tempfile.mkstemp(suffix='.tgz')
+    os.close(local_temp_archive_handle)
+    tar = tarfile.open(local_temp_archive_path, "w:gz")
+    tar.add(filename)
+    tar.close()
+       
+    # Upload archive to S3
+    bucket = get_bucket()
     hostname = os.environ.get('HOSTNAME') #should have a hostname structure 'jupyter-<username>'
     assert(hostname!=None) #check that env variable was read correctly
     username = hostname[8:] #Remove prefix 'jupyter-' from hostmane to get username
@@ -191,3 +197,29 @@ def schedule_notebook(filename):
       }
     }    
     create_argo_job(body)
+
+def get_workflow(jobname, destination):
+    bucket = get_bucket()
+    
+    # Download Argo atrifact (archive) to a temporary location
+    local_temp_archive_handle, local_temp_archive_path = tempfile.mkstemp(suffix='.tgz')
+    os.close(local_temp_archive_handle)
+
+
+    # S3 location of the output is standardized
+    result_key = jobname + '/' + jobname + '/' + 'notebook-out.tgz'
+    
+    # Download archive to a temporary place
+    bucket.download_file(result_key, local_temp_archive_path)
+
+    tar = tarfile.open(local_temp_archive_path)
+    job_uuid = jobname.split('-')[-1]
+
+    # Extract the resulting notebook to a temp location
+    local_temp_result_folder = tempfile.mkdtemp()
+    for member in tar.getmembers():
+        if member.name == 'out.ipynb':
+            tar.extract(member, local_temp_result_folder) # extract to a temp location
+
+    # Rename resulting notebook and move it to the desired location
+    shutil.move(local_temp_result_folder + '/out.ipynb', destination)
