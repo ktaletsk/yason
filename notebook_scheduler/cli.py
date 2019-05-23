@@ -3,16 +3,20 @@
 """Console script for notebook_scheduler."""
 import sys
 import click
+import notebook_scheduler.notebook_scheduler as ns
 
-
-@click.command()
-def main(args=None):
+@click.group()
+def main():
     """Console script for notebook_scheduler."""
-    click.echo("Replace this message by putting your code into "
-               "notebook_scheduler.cli.main")
-    click.echo("See click documentation at http://click.pocoo.org/")
-    return 0
+    pass
 
+@main.command()
+def list():
+    ns.list_argo_jobs()
+
+@main.command()
+def add():
+    ns.schedule_notebook('test.ipynb')
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover
