@@ -53,6 +53,7 @@ def list_argo_jobs():
             data.append([f"{item['metadata']['name']}", f"{item['status']['phase']}", notebook_name, f"{item['status']['startedAt']}"])
         df = pd.DataFrame(data, columns=["NAME", "STATUS", "NOTEBOOK NAME", "STARTED AT"])
         df['STARTED AT'] = pd.to_datetime(df['STARTED AT'])
+        df['STARTED AT'] = df['STARTED AT'].dt.strftime('%b %d, %H:%M')
         df.set_index('STARTED AT', inplace=True)
         df = df.sort_values(by=['STARTED AT'], ascending=False)
         pprint(df)
@@ -92,6 +93,7 @@ def schedule_notebook(filename):
         assert(AWS_SECRET_ACCESS_KEY!=None)
     except AssertionError:
         print("Error: S3 credentials are not set up")
+        return
     
     s3 = boto3.resource('s3',
                         endpoint_url=AWS_ENDPOINT,
@@ -114,13 +116,14 @@ def schedule_notebook(filename):
     s3_archive_key = username + "/inputs/" + s3_archive_uuid + ".tgz"
     bucket.upload_file(local_temp_archive_path, s3_archive_key)
     
+    os.remove(local_temp_archive_path)
     #Check that upload was successful and delete local archive
     try:
         [bucket_object.key for bucket_object in bucket.objects.all()].index(s3_archive_key)
     except ValueError:
         print('Error: Notebook upload failed')
-    os.remove(local_temp_archive_path)
-            
+        return
+         
     # Define the JSON schema of the Workflow Custom Resource Definition to create.
     body = {
       "apiVersion": "argoproj.io/v1alpha1",

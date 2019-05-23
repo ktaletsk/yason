@@ -15,8 +15,9 @@ def list():
     ys.list_argo_jobs()
 
 @main.command()
-def add():
-    ys.schedule_notebook('test.ipynb')
+@click.argument('filename')
+def add(filename):
+    ys.schedule_notebook(filename)
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover
