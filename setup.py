@@ -15,7 +15,7 @@ requirements = ['Click>=6.0', 'boto3>=1.9.0', 'pandas>=0.24.0', 'kubernetes>=9.0
 
 setup_requirements = ['pytest-runner', ]
 
-test_requirements = ['pytest', ]
+test_requirements = ['pytest', 'boto3>=1.9.0', 'pandas>=0.24.0', 'kubernetes>=9.0.0']
 
 setup(
     author="Konstantin Taletskiy",
@@ -36,20 +36,20 @@ setup(
     description="CLI to schedule Jupyter Notebook execution with Papermill and Argo",
     entry_points={
         'console_scripts': [
-            'notebook_scheduler=notebook_scheduler.cli:main',
+            'yason=yason.cli:main',
         ],
     },
     install_requires=requirements,
     license="MIT license",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords='notebook_scheduler',
-    name='notebook_scheduler',
-    packages=find_packages(include=['notebook_scheduler']),
+    keywords='yason',
+    name='yason',
+    packages=find_packages(include=['yason']),
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/ktaletsk/notebook_scheduler',
+    url='https://github.com/ktaletsk/yason',
     version='0.1.0',
     zip_safe=False,
 )

@@ -3,7 +3,7 @@
 """Console script for notebook_scheduler."""
 import sys
 import click
-import notebook_scheduler.notebook_scheduler as ns
+import yason.yason as ys
 
 @click.group()
 def main():
@@ -12,11 +12,11 @@ def main():
 
 @main.command()
 def list():
-    ns.list_argo_jobs()
+    ys.list_argo_jobs()
 
 @main.command()
 def add():
-    ns.schedule_notebook('test.ipynb')
+    ys.schedule_notebook('test.ipynb')
 
 if __name__ == "__main__":
     sys.exit(main())  # pragma: no cover

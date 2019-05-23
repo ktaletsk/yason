@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `notebook_scheduler` package."""
+"""Tests for `yason` package."""
 
 import pytest
 
 from click.testing import CliRunner
 
-from notebook_scheduler import notebook_scheduler
-from notebook_scheduler import cli
+from yason import yason
+from yason import cli
 
 
 @pytest.fixture
@@ -32,7 +32,7 @@ def test_command_line_interface():
     runner = CliRunner()
     result = runner.invoke(cli.main)
     assert result.exit_code == 0
-    assert 'notebook_scheduler.cli.main' in result.output
+    assert 'yason.cli.main' in result.output
     help_result = runner.invoke(cli.main, ['--help'])
     assert help_result.exit_code == 0
     assert '--help  Show this message and exit.' in help_result.output
