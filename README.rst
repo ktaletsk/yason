@@ -1,5 +1,5 @@
 ==================
-Notebook Scheduler
+yason: Jupyter Notebook Scheduler for Argo
 ==================
 
 
@@ -20,7 +20,7 @@ Notebook Scheduler
 
 
 
-CLI to schedule Jupyter Notebook execution with Papermill and Argo
+Python package and CLI to schedule Jupyter Notebook execution with Papermill on Argo cluster
 
 
 * Free software: MIT license
@@ -30,7 +30,10 @@ CLI to schedule Jupyter Notebook execution with Papermill and Argo
 Features
 --------
 
-* TODO
+* Check the status of all scheduled notebook jobs
+* Schedule a notebook for execution
+* TODO: Get resulting notebook after execution
+* TODO: Delete scheduled notebook job
 
 Credits
 -------
