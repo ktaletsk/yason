@@ -80,16 +80,25 @@ def create_argo_job(body):
             
     try: 
         api_response = api_instance.create_namespaced_custom_object(group, version, namespace, plural, body)
-        pprint(api_response)
+        print(f'Workflow {api_response["metadata"]["labels"]["uuid"]} created')
     except ApiException as e:
-        print("Exception when calling CustomObjectsApi->create_namespaced_custom_object: %s\n" % e)
+        print("Error: Cannot create workflow")
                          
-def get_bucket():
+def schedule_notebook(filename):
     """
-    Get credentials from environment variables
-    Create boto3 resource
-    Connect to and return S3 bucket
+    Send the Notebook with the given filename to Argo cluster for execution
     """
+                         
+    job_uuid = uuid.uuid4().hex
+    
+    # Put Notebook file into local temporary archive
+    local_temp_archive_handle, local_temp_archive_path = tempfile.mkstemp(suffix='.tgz')
+    os.close(local_temp_archive_handle)
+    tar = tarfile.open(local_temp_archive_path, "w:gz")
+    tar.add(filename)
+    tar.close()
+       
+    # Upload archive to S3
     #Setup S3 resource
     try:
         assert(AWS_HOST!=None)
@@ -107,24 +116,8 @@ def get_bucket():
                         config=Config(signature_version='s3v4'))
 
     #Create bucket object
-    return s3.Bucket('rookbucket')
+    bucket = s3.Bucket('rookbucket')
                          
-def schedule_notebook(filename):
-    """
-    Send the Notebook with the given filename to Argo cluster for execution
-    """
-                         
-    job_uuid = uuid.uuid4().hex
-                         
-    # Put Notebook file into local temporary archive
-    local_temp_archive_handle, local_temp_archive_path = tempfile.mkstemp(suffix='.tgz')
-    os.close(local_temp_archive_handle)
-    tar = tarfile.open(local_temp_archive_path, "w:gz")
-    tar.add(filename)
-    tar.close()
-       
-    # Upload archive to S3
-    bucket = get_bucket()
     username = get_jupyter_username()
 
     # Archived notebook is stored in S3 bucket at the following path:
@@ -216,12 +209,29 @@ def schedule_notebook(filename):
 def get_workflow(job_uuid, destination):
     username = get_jupyter_username()
     jobname = username + '-workflow-' + job_uuid
-    bucket = get_bucket()
+    
+    #Setup S3 resource
+    try:
+        assert(AWS_HOST!=None)
+        assert(AWS_ENDPOINT!=None)
+        assert(AWS_ACCESS_KEY_ID!=None)
+        assert(AWS_SECRET_ACCESS_KEY!=None)
+    except AssertionError:
+        print("Error: S3 credentials are not set up")
+        return
+    
+    s3 = boto3.resource('s3',
+                        endpoint_url=AWS_ENDPOINT,
+                        aws_access_key_id=AWS_ACCESS_KEY_ID,
+                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                        config=Config(signature_version='s3v4'))
+
+    #Create bucket object
+    bucket = s3.Bucket('rookbucket')
     
     # Download Argo atrifact (archive) to a temporary location
     local_temp_archive_handle, local_temp_archive_path = tempfile.mkstemp(suffix='.tgz')
     os.close(local_temp_archive_handle)
-
 
     # S3 location of the output is standardized
     result_key = jobname + '/' + jobname + '/' + 'notebook-out.tgz'
@@ -257,3 +267,35 @@ def delete_workflow(job_uuid):
         api_instance.patch_namespaced_custom_object(group, version, namespace, plural, jobname, api_response)
     except ApiException as e:
         print("Cannot delete job {job_uuid}")
+
+    # Clean up S3 bucket from artifacts
+    #Setup S3 resource
+    try:
+        assert(AWS_HOST!=None)
+        assert(AWS_ENDPOINT!=None)
+        assert(AWS_ACCESS_KEY_ID!=None)
+        assert(AWS_SECRET_ACCESS_KEY!=None)
+    except AssertionError:
+        print("Error: S3 credentials are not set up")
+        return
+    
+    s3 = boto3.resource('s3',
+                        endpoint_url=AWS_ENDPOINT,
+                        aws_access_key_id=AWS_ACCESS_KEY_ID,
+                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                        config=Config(signature_version='s3v4'))
+
+    #Create bucket object
+    bucket = s3.Bucket('rookbucket')
+    
+    s3_input_archive_key = username + "/inputs/" + job_uuid + ".tgz"
+    s3_output_archive_key = jobname + '/' + jobname + '/' + 'notebook-out.tgz'
+    
+    bucket.delete_objects(
+        Delete={
+            'Objects': [
+                {'Key': s3_input_archive_key},
+                {'Key': s3_output_archive_key},
+            ],
+        }
+    )
