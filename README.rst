@@ -36,8 +36,8 @@ Features
 
 * Check the status of all scheduled notebook jobs
 * Schedule a notebook for execution
-* TODO: Get resulting notebook after execution
-* TODO: Delete scheduled notebook job
+* Get resulting notebook after execution
+* Delete scheduled notebook job
 
 Credits
 -------
