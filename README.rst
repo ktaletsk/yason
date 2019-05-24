@@ -1,16 +1,16 @@
-.. image:: https://img.shields.io/pypi/v/notebook_scheduler.svg
-        :target: https://pypi.python.org/pypi/notebook_scheduler
+.. image:: https://img.shields.io/pypi/v/yason.svg
+        :target: https://pypi.python.org/pypi/yason
 
-.. image:: https://img.shields.io/travis/ktaletsk/notebook_scheduler.svg
-        :target: https://travis-ci.org/ktaletsk/notebook_scheduler
+.. image:: https://img.shields.io/travis/com/ktaletsk/yason.svg
+        :target: https://travis-ci.com/ktaletsk/yason
 
-.. image:: https://readthedocs.org/projects/notebook-scheduler/badge/?version=latest
-        :target: https://notebook-scheduler.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/yason/badge/?version=latest
+        :target: https://yason.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
-.. image:: https://pyup.io/repos/github/ktaletsk/notebook_scheduler/shield.svg
-     :target: https://pyup.io/repos/github/ktaletsk/notebook_scheduler/
+.. image:: https://pyup.io/repos/github/ktaletsk/yason/shield.svg
+     :target: https://pyup.io/repos/github/ktaletsk/yason/
      :alt: Updates
 
 ==================
@@ -28,7 +28,7 @@ Python package and CLI to schedule Jupyter Notebook execution with Papermill on 
 
 
 * Free software: MIT license
-* Documentation: https://notebook-scheduler.readthedocs.io.
+* Documentation: https://yason.readthedocs.io.
 
 
 Features
