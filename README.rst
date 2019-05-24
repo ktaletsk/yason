@@ -2,6 +2,10 @@
 yason: Jupyter Notebook Scheduler for Argo
 ==================
 
+.. image:: logo.png
+    :height: 50px
+    :align: center
+    :alt: logo
 
 .. image:: https://img.shields.io/pypi/v/notebook_scheduler.svg
         :target: https://pypi.python.org/pypi/notebook_scheduler
