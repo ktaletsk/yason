@@ -1,12 +1,3 @@
-==================
-yason: Jupyter Notebook Scheduler for Argo
-==================
-
-.. image:: logo.png
-    :height: 50px
-    :align: center
-    :alt: logo
-
 .. image:: https://img.shields.io/pypi/v/notebook_scheduler.svg
         :target: https://pypi.python.org/pypi/notebook_scheduler
 
@@ -21,6 +12,15 @@ yason: Jupyter Notebook Scheduler for Argo
 .. image:: https://pyup.io/repos/github/ktaletsk/notebook_scheduler/shield.svg
      :target: https://pyup.io/repos/github/ktaletsk/notebook_scheduler/
      :alt: Updates
+
+==================
+yason: Jupyter Notebook Scheduler for Argo
+==================
+
+.. image:: logo.png
+    :height: 50px
+    :align: center
+    :alt: logo
 
 
 
