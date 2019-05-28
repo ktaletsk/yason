@@ -39,6 +39,11 @@ Features
 * Get resulting notebook after execution
 * Delete scheduled notebook job
 
+Usage
+-----
+
+.. include:: docs/usage.rst
+
 Credits
 -------
 
