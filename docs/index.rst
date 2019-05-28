@@ -6,6 +6,7 @@ Welcome to Yason's documentation!
    :caption: Contents:
 
    readme
+   requirements
    installation
    usage
    modules
