@@ -5,7 +5,6 @@ from __future__ import print_function
 import os
 import uuid
 import tarfile
-import time
 from pprint import pprint
 import shutil
 import boto3
