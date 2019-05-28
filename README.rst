@@ -42,7 +42,6 @@ Features
 Usage
 -----
 
-.. include:: docs/usage.rst
 
 Credits
 -------
