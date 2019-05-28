@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use Notebook Scheduler in a project::
+To use yason in a project::
 
-    import notebook_scheduler
+    import yason

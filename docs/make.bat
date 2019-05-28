@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=notebook_scheduler
+set SPHINXPROJ=yason
 
 if "%1" == "" goto help
 

@@ -1,4 +1,4 @@
-Welcome to Notebook Scheduler's documentation!
+Welcome to Yason's documentation!
 ======================================
 
 .. toctree::

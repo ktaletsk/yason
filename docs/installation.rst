@@ -8,13 +8,13 @@ Installation
 Stable release
 --------------
 
-To install Notebook Scheduler, run this command in your terminal:
+To install Yason, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install notebook_scheduler
+    $ pip install yason
 
-This is the preferred method to install Notebook Scheduler, as it will always install the most recent stable release.
+This is the preferred method to install yason, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -26,19 +26,19 @@ you through the process.
 From sources
 ------------
 
-The sources for Notebook Scheduler can be downloaded from the `Github repo`_.
+The sources for yason can be downloaded from the `Github repo`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/ktaletsk/notebook_scheduler
+    $ git clone git://github.com/ktaletsk/yason
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/ktaletsk/notebook_scheduler/tarball/master
+    $ curl  -OL https://github.com/ktaletsk/yason/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/ktaletsk/notebook_scheduler
-.. _tarball: https://github.com/ktaletsk/notebook_scheduler/tarball/master
+.. _Github repo: https://github.com/ktaletsk/yason
+.. _tarball: https://github.com/ktaletsk/yason/tarball/master
