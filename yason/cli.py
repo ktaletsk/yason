@@ -7,7 +7,7 @@ import yason.yason as ys
 
 @click.group()
 def main():
-    """Console script for notebook_scheduler."""
+    """Welcome to yason CLI."""
     pass
 
 @main.command()
