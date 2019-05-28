@@ -51,22 +51,31 @@ CLI Tool
 --------
 
 To use Yason as CLI tool, type::
+
     yason COMMAND [ARGS]
 
 To see the list of all scheduled Notebooks for your JupyterHub username, type::
+
     yason list
 
 To schedule Notebook, type::
+
     yason add <Notebook Name>.ipynb
 
 To get the resulting Notebook after execution, type::
+
     yason get <Workflow ID> <Destination>
+    
 i.e.::
+
     yason get 25fe9753bc854148aac26ff7d97ba128 My_Notebook_result.ipynb
 
 To delete the scheduled Notebook from your list, type::
+
     yason delete <Workflow ID>
+    
 i.e.::
+
     yason delete 25fe9753bc854148aac26ff7d97ba128
 
 
