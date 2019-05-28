@@ -13,9 +13,9 @@
      :target: https://pyup.io/repos/github/ktaletsk/yason/
      :alt: Updates
 
-==================
+==========================================
 yason: Jupyter Notebook Scheduler for Argo
-==================
+==========================================
 
 .. image:: logo.png
     :height: 50px
