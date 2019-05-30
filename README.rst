@@ -70,9 +70,9 @@ To see the list of all scheduled Notebooks for your JupyterHub username, type::
 
     yason list
 
-To schedule Notebook, type::
+To schedule and execute Notebook immediately, type::
 
-    yason add <Notebook Name>.ipynb
+    yason run <Notebook Name>.ipynb
 
 To get the resulting Notebook after execution, type::
 

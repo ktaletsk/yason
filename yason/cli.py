@@ -16,7 +16,7 @@ def list():
 
 @main.command()
 @click.argument('filename')
-def add(filename):
+def run(filename):
     ys.schedule_notebook(filename)
 
 @main.command()
