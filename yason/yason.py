@@ -69,9 +69,10 @@ def list_argo_jobs():
         df['STARTED AT'] = df['STARTED AT'].dt.strftime('%b %d, %H:%M')
         df.set_index('ID', inplace=True)
         df = df.sort_values(by=['STARTED AT'], ascending=False)
-        pprint(df)
+        if len(df.index)>0:
+            pprint(df)
     except ApiException as e:
-        print("Exception when calling CustomObjectsApi->list_namespaced_custom_object: %s\n" % e)
+        print("Error: Cannot list workflows")
     return
     
 def create_argo_job(body):
