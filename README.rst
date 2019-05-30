@@ -23,8 +23,7 @@ yason: Jupyter Notebook Scheduler for Argo
     :alt: logo
 
 
-
-Python package and CLI to schedule Jupyter Notebook execution with Papermill on Argo cluster
+JupyterHub deployed on Kubernetes allows teams to do data analysis in the browser and efficiently share computational resources. But when it comes to Jupyter Notebooks, it is not easy to run them remotely and non-interactively or schedule them. Fortunately, with Papermill and Argo Workflows it is now possible to do just that. Yason is Python package and CLI for scheduling the remote execution of Jupyter Notebooks.
 
 
 * Free software: MIT license
@@ -38,6 +37,19 @@ Features
 * Schedule a notebook for execution
 * Get resulting notebook after execution
 * Delete scheduled notebook job
+
+Coming soon
+-----------
+
+* Including multiple files/folders together with Notebook for execution
+* Integration with Argo events for scheduling
+
+Prerequisites
+-------------
+
+Yason is intended to run on JupyterLab pods spawned by JupyterHub deployed on Kubernetes. Yason also requires Argo Workflows to be deployed on the same cluster in the namespace `argo`. S3 bucket is required for intermediate storage of Notebooks before and after their execution.
+
+See more details and instructions in the full documentation https://yason.readthedocs.io
 
 Usage
 -----
@@ -77,6 +89,11 @@ To delete the scheduled Notebook from your list, type::
 i.e.::
 
     yason delete 25fe9753bc854148aac26ff7d97ba128
+
+Name
+----
+
+Yason (or Jason) in Greek mythology is the leader of Argonauts. Yason brings your Jupyter Notebooks on board of Argo (Workflows).
 
 
 Credits
