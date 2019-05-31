@@ -35,7 +35,29 @@ def setup_k8s_api():
     kubernetes.config.load_incluster_config() #Only works inside of JupyterLab Pod
     configuration = kubernetes.client.Configuration() #Create configuration
     
-    return kubernetes.client.CustomObjectsApi(kubernetes.client.ApiClient(configuration)) 
+    return kubernetes.client.CustomObjectsApi(kubernetes.client.ApiClient(configuration))
+
+def setup_s3_bucket():
+    #Setup S3 resource
+    try:
+        assert(AWS_HOST!=None)
+        assert(AWS_ENDPOINT!=None)
+        assert(AWS_ACCESS_KEY_ID!=None)
+        assert(AWS_SECRET_ACCESS_KEY!=None)
+    except AssertionError:
+        print("Error: S3 credentials are not set up")
+
+    s3_session = boto3.Session()
+    
+    s3 = s3_session.resource('s3',
+                            endpoint_url=AWS_ENDPOINT,
+                            aws_access_key_id=AWS_ACCESS_KEY_ID,
+                            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                            config=Config(signature_version='s3v4'))
+    
+    bucket = s3.Bucket('rookbucket')
+    
+    return bucket
 
 def get_jupyter_username():
     try:
@@ -99,25 +121,7 @@ def schedule_notebook(filename):
     tar.close()
        
     # Upload archive to S3
-    #Setup S3 resource
-    try:
-        assert(AWS_HOST!=None)
-        assert(AWS_ENDPOINT!=None)
-        assert(AWS_ACCESS_KEY_ID!=None)
-        assert(AWS_SECRET_ACCESS_KEY!=None)
-    except AssertionError:
-        print("Error: S3 credentials are not set up")
-        return
-    
-    s3 = boto3.resource('s3',
-                        endpoint_url=AWS_ENDPOINT,
-                        aws_access_key_id=AWS_ACCESS_KEY_ID,
-                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                        config=Config(signature_version='s3v4'))
-
-    #Create bucket object
-    bucket = s3.Bucket('rookbucket')
-                         
+    bucket = setup_s3_bucket()
     username = get_jupyter_username()
 
     # Archived notebook is stored in S3 bucket at the following path:
@@ -210,31 +214,13 @@ def get_workflow(job_uuid, destination):
     username = get_jupyter_username()
     jobname = username + '-workflow-' + job_uuid
     
-    #Setup S3 resource
-    try:
-        assert(AWS_HOST!=None)
-        assert(AWS_ENDPOINT!=None)
-        assert(AWS_ACCESS_KEY_ID!=None)
-        assert(AWS_SECRET_ACCESS_KEY!=None)
-    except AssertionError:
-        print("Error: S3 credentials are not set up")
-        return
-    
-    s3 = boto3.resource('s3',
-                        endpoint_url=AWS_ENDPOINT,
-                        aws_access_key_id=AWS_ACCESS_KEY_ID,
-                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                        config=Config(signature_version='s3v4'))
-
-    #Create bucket object
-    bucket = s3.Bucket('rookbucket')
-    
     # Download Argo atrifact (archive) to a temporary location
     local_temp_archive_handle, local_temp_archive_path = tempfile.mkstemp(suffix='.tgz')
     os.close(local_temp_archive_handle)
 
     # S3 location of the output is standardized
     result_key = jobname + '/' + jobname + '/' + 'notebook-out.tgz'
+    bucket = setup_s3_bucket()
     
     # Download archive to a temporary place
     bucket.download_file(result_key, local_temp_archive_path)
@@ -269,25 +255,7 @@ def delete_workflow(job_uuid):
         print("Cannot delete job {job_uuid}")
 
     # Clean up S3 bucket from artifacts
-    #Setup S3 resource
-    try:
-        assert(AWS_HOST!=None)
-        assert(AWS_ENDPOINT!=None)
-        assert(AWS_ACCESS_KEY_ID!=None)
-        assert(AWS_SECRET_ACCESS_KEY!=None)
-    except AssertionError:
-        print("Error: S3 credentials are not set up")
-        return
-    
-    s3 = boto3.resource('s3',
-                        endpoint_url=AWS_ENDPOINT,
-                        aws_access_key_id=AWS_ACCESS_KEY_ID,
-                        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                        config=Config(signature_version='s3v4'))
-
-    #Create bucket object
-    bucket = s3.Bucket('rookbucket')
-    
+    bucket = setup_s3_bucket()
     s3_input_archive_key = username + "/inputs/" + job_uuid + ".tgz"
     s3_output_archive_key = jobname + '/' + jobname + '/' + 'notebook-out.tgz'
     

@@ -21,7 +21,7 @@ setup(
     author="Konstantin Taletskiy",
     author_email='konstantin@taletskiy.com',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+	'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
@@ -44,6 +44,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/ktaletsk/yason',
-    version='0.1.3',
+    version='0.1.4',
     zip_safe=False,
 )
