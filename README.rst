@@ -1,26 +1,30 @@
-.. image:: https://img.shields.io/pypi/v/yason.svg
-        :target: https://pypi.python.org/pypi/yason
+.. raw:: html
 
-.. image:: https://img.shields.io/travis/com/ktaletsk/yason.svg
-        :target: https://travis-ci.com/ktaletsk/yason
+   <h1>
+   <p align="center">
+     <picture>
+       <source media="(prefers-color-scheme: dark)" srcset="logo-dark.png">
+       <img src="logo.png" alt="yason logo" width="260">
+     </picture>
+     <br>yason
+   </p>
+   <samp>
+     <p align="center">
+       <a href="https://pypi.org/project/yason/">
+         <img src="https://img.shields.io/pypi/v/yason.svg" alt="PyPI version">
+       </a>
+       <a href="https://yason.readthedocs.io/en/latest/">
+         <img src="https://readthedocs.org/projects/yason/badge/?version=latest" alt="Documentation status">
+       </a>
+       <a href="https://github.com/ktaletsk/yason/blob/master/LICENSE">
+         <img src="https://img.shields.io/pypi/l/yason.svg" alt="License">
+       </a>
+     </p>
+   </samp>
+   </h1>
 
-.. image:: https://readthedocs.org/projects/yason/badge/?version=latest
-        :target: https://yason.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-
-.. image:: https://pyup.io/repos/github/ktaletsk/yason/shield.svg
-     :target: https://pyup.io/repos/github/ktaletsk/yason/
-     :alt: Updates
-
-==========================================
-yason: Jupyter Notebook Scheduler for Argo
-==========================================
-
-.. image:: logo.png
-    :height: 50px
-    :align: center
-    :alt: logo
+Jupyter Notebook Scheduler for Argo
+===================================
 
 
 JupyterHub deployed on Kubernetes allows teams to do data analysis in the browser and efficiently share computational resources. But when it comes to Jupyter Notebooks, it is not easy to run them remotely and non-interactively or schedule them. Fortunately, with Papermill and Argo Workflows it is now possible to do just that. Yason is Python package and CLI for scheduling the remote execution of Jupyter Notebooks.
@@ -28,6 +32,12 @@ JupyterHub deployed on Kubernetes allows teams to do data analysis in the browse
 
 * Free software: MIT license
 * Documentation: https://yason.readthedocs.io.
+
+
+Maintenance
+-----------
+
+Project maintenance has restarted. The first focus is modernizing packaging, CI, dependency checks, documentation, and compatibility with current Python, Kubernetes, Papermill, and Argo Workflows releases.
 
 
 Features
